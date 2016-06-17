@@ -16,7 +16,6 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var overviewLabel: UILabel!
     
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var innerScrollView: UIScrollView!
     
     var movie: NSDictionary!
     
@@ -28,7 +27,7 @@ class DetailViewController: UIViewController {
         // Do any additional setup after loading the view.
 
         scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: scrollView.frame.origin.y + viewSpace.frame.size.height)
-        innerScrollView.contentSize = CGSize(width: innerScrollView.frame.size.width, height: view.frame.size.height)
+        
         let title = movie["title"] as? String
         titleLabel.text = title
         

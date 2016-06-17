@@ -66,6 +66,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 else {
                     
                     print("unsuccessful request")
+                    
+                    
+                    
                 }
                 
         })
