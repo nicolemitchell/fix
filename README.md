@@ -24,8 +24,9 @@ The following **optional** features are implemented:
 The following **additional** features are implemented:
 
 - [X] Opens detailed view page for each movie when selected.
-- [X] Tab bar with now playing, top rated and cominng soon.
+- [X] Tab bar with now playing, top rated and coming soon.
 - [X] App icon.
+- [X] Scroll up on details view to see overview.
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
