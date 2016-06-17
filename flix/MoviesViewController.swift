@@ -8,48 +8,84 @@
 
 import UIKit
 import AFNetworking
+import MBProgressHUD
 
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
     var movies: [NSDictionary]?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    var refreshControl = UIRefreshControl()
 
-        // Do any additional setup after loading the view.
-        
-        tableView.dataSource = self
-        tableView.delegate = self
-        
-        
+    func urlRequest() -> NSURLRequest  {
         let apiKey = "ab31eb67486db022c49f78ea59110c5f"
         let url = NSURL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
         let request = NSURLRequest(
             URL: url!,
             cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData,
             timeoutInterval: 10)
-        
+        return request
+    }
+    
+    func urlSession() -> NSURLSession  {
         let session = NSURLSession(
-            configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
-            delegate: nil,
-            delegateQueue: NSOperationQueue.mainQueue()
+        configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
+        delegate:nil,
+        delegateQueue:NSOperationQueue.mainQueue()
         )
+        return session
+    }
+    
+    func loadData(initial: Bool) {
+        let request = urlRequest()
+        let session = urlSession()
+        
+        if (initial) {
+            MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        }
+        
         
         let task: NSURLSessionDataTask = session.dataTaskWithRequest(request,
-                                                                     completionHandler: { (dataOrNil, response, error) in
+             completionHandler: { (dataOrNil, response, error) in
+                if (initial) {
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                }
+                else {
+                    self.refreshControl.endRefreshing()
+                }
+                
                 if let data = dataOrNil {
                     if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
-                            data, options:[]) as? NSDictionary {
-                            print("response: \(responseDictionary)")
+                        data, options:[]) as? NSDictionary {
+                        print("response: \(responseDictionary)")
                         
-                            self.movies = responseDictionary["results"] as? [NSDictionary]
-                            self.tableView.reloadData()
+                        self.movies = responseDictionary["results"] as? [NSDictionary]
+                        self.tableView.reloadData()
                     }
                 }
+                else {
+                    
+                    print("unsuccessful request")
+                }
+                
         })
         task.resume()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Do any additional setup after loading the view.
+        refreshControl.addTarget(self, action: #selector(loadData(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        tableView.insertSubview(refreshControl, atIndex: 0)
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        
+        loadData(true)
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -73,27 +109,39 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let movie = movies![indexPath.row]
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
-        let baseUrl = "http://image.tmdb.org/t/p/w500"
-        let posterPath = movie["poster_path"] as! String
-        let imageUrl = NSURL(string: baseUrl + posterPath)
-        
         cell.titleLabel.text = title
         cell.overviewLabel.text = overview
-        cell.posterView.setImageWithURL(imageUrl!)
-        
+        let baseUrl = "http://image.tmdb.org/t/p/w500"
+        if let posterPath = movie["poster_path"] as? String {
+            let imageUrl = NSURL(string: baseUrl + posterPath)
+            cell.posterView.setImageWithURL(imageUrl!)
+        }
         print ("row \(indexPath.row)")
         return cell
     }
     
+    
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPathForCell(cell)
+        let movie = movies![indexPath!.row]
+        
+        let detailViewController = segue.destinationViewController as! DetailViewController
+        
+        detailViewController.movie = movie
+        
+        
+        
+        
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+    
 
 }

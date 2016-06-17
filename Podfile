@@ -7,5 +7,7 @@ target 'flix' do
 
   # Pods for flix
   pod 'AFNetworking'
+  pod 'MBProgressHUD'
+
 
 end
