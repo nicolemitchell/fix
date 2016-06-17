@@ -2,7 +2,7 @@
 
 **Flix** is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
-Time spent: **8.5** hours spent in total
+Time spent: **10.5** hours spent in total
 
 ## User Stories
 
@@ -15,15 +15,17 @@ The following **required** functionality is complete:
 
 The following **optional** features are implemented:
 
-- [ ] User sees an error message when there's a networking error.
+- [X] User sees an error message when there's a networking error.
 - [ ] Movies are displayed using a CollectionView instead of a TableView.
 - [ ] User can search for a movie.
-- [ ] All images fade in as they are loading.
+- [X] All images fade in as they are loading.
 - [X] Customize the UI.
 
 The following **additional** features are implemented:
 
 - [X] Opens detailed view page for each movie when selected.
+- [X] Tab bar with now playing, top rated and cominng soon.
+- [X] App icon.
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
