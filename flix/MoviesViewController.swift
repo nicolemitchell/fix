@@ -13,13 +13,16 @@ import MBProgressHUD
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var networkError: UILabel!
     
     var movies: [NSDictionary]?
     var refreshControl = UIRefreshControl()
+    var endpoint: String!
+    
 
     func urlRequest() -> NSURLRequest  {
         let apiKey = "ab31eb67486db022c49f78ea59110c5f"
-        let url = NSURL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let url = NSURL(string: "https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)")
         let request = NSURLRequest(
             URL: url!,
             cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData,
@@ -37,6 +40,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func loadData(initial: Bool) {
+        self.networkError.hidden = true
+        
         let request = urlRequest()
         let session = urlSession()
         
@@ -67,7 +72,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                     
                     print("unsuccessful request")
                     
-                    
+                    self.networkError.hidden = false
                     
                 }
                 
