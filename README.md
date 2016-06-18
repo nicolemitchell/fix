@@ -52,6 +52,8 @@ I had difficulty creating the scroll-view in the movies detail page so that the 
 List an 3rd party libraries, icons, graphics, or other assets you used in your app.
 
 - [AFNetworking](https://github.com/AFNetworking/AFNetworking) - networking task library
+- [The Noun Project] (https://thenounproject.com) - Creative Commons and public domain iconography 
+- [The Movie Database] (http://docs.themoviedb.apiary.io/#) - Movie Database API
 
 ## License
 
